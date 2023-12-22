@@ -1,0 +1,13 @@
+libtorrent==2.0.9
+pytube==15.0.0
+requests==2.22.0
+torrentp==0.1.6
+gunicorn
+PyBitTorrent==0.5.6
+celery==5.3.4
+redis==3.5.3
+flask==3.0.0
+python-dotenv==1.0.0
+mongoengine==0.27.0
+uvicorn==0.24.0.post1
+flower==2.0.1

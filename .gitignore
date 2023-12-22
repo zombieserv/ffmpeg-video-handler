@@ -1,0 +1,9 @@
+.idea
+__pycache__
+/data
+/venv
+videos/*
+!videos/handled/
+videos/handled/*
+!videos/handled/.gitkeep
+.env

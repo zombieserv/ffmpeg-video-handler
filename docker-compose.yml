@@ -1,0 +1,60 @@
+version: '3'
+services:
+  video_service:
+    build:
+      context: .
+    container_name: video_service
+    restart: always
+    volumes:
+      - './videos:/app/videos'
+      - '.:/app'
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: "python main.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - celery
+      - mongodb
+
+  celery:
+    image: celery:latest
+    container_name: celery
+    build:
+      context: .
+    command: sh -c "export PYTHONPATH=$PYTHONPATH:/app && celery -A tasks worker --loglevel=info"
+    volumes:
+      - './videos:/app/videos'
+      - '.:/app'
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  flower:
+    image: celery:latest
+    container_name: flower
+    build:
+      context: .
+    command: celery -A tasks flower
+    ports:
+      - "5555:5555"
+    depends_on:
+      - celery
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    env_file: .env
+    restart: always
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db

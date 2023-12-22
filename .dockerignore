@@ -1,0 +1,10 @@
+# .dockerignore
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+data/
+videos/*
+!videos/src/
+!videos/src/
